@@ -1,0 +1,207 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+body {
+font-size: 100%;
+}
+
+[data-bs-theme="dark"] {
+    --bs-body-bg-rgb: 0, 0, 0;
+    --bs-body-color-rgb: 255, 255, 255;
+    --bs-btn-bg-b-rgb: 51, 51, 51;
+    --bs-btn-hover-bg-rgb: 85, 85, 85;
+    --bs-input-bg-rgb: 34, 34, 34;
+    --bs-input-color-rgb: 255, 255, 255;
+    --bs-select-bg-rgb: 34, 34, 34;
+    --bs-select-color-rgb: 255, 255, 255;
+    --bs-placeholder-color-rgb: 255, 255, 255;
+}
+
+[data-bs-theme="light"] {
+    --bs-body-bg-rgb: 255, 255, 255;
+    --bs-body-color-rgb: 0, 0, 0;
+    --bs-btn-bg-b-rgb: 150, 186, 201;
+    --bs-btn-hover-bg-rgb: 208, 208, 208;
+    --bs-input-bg-rgb: 255, 255, 255;
+    --bs-input-color-rgb: 0, 0, 0;
+    --bs-select-bg-rgb: 255, 255, 255;
+    --bs-select-color-rgb: 0, 0, 0;
+    --bs-placeholder-color-rgb: 0, 0, 0;
+}
+
+[data-bs-theme="med"] {
+    --bs-body-bg-rgb: 31, 30, 121;
+    --bs-body-color-rgb: 71, 23, 23;
+    --bs-btn-bg-b-rgb: 92, 91, 223;
+    --bs-btn-hover-bg-rgb: 71, 70, 195;
+    --bs-input-bg-rgb: 56, 55, 163;
+    --bs-input-color-rgb: 255, 255, 255;
+    --bs-select-bg-rgb: 56, 55, 163;
+    --bs-select-color-rgb: 255, 255, 255;
+    --bs-placeholder-color-rgb: 255, 255, 255;
+}
+
+
+/* 🎨 Oppdaterer knapper */
+button, .btn {
+    background-color: rgb(var(--bs-btn-bg-b-rgb));
+    color: rgb(var(--bs-body-color-rgb));
+    font-size: auto;
+    border: none;
+    transition: background-color 0.3s ease-in-out;
+}
+
+button:hover, .btn:hover {
+    background-color: rgb(var(--bs-btn-hover-bg-rgb));
+}
+
+/* 🎨 Oppdaterer input-felt */
+input, .form-control {
+    background-color: rgb(var(--bs-input-bg-rgb));
+    color: rgb(var(--bs-input-color-rgb));
+    border: 1px solid rgb(var(--bs-body-color-rgb));
+}
+
+input, .form-control:focus {
+    background-color: rgb(var(--bs-input-bg-rgb));
+    color: rgb(var(--bs-input-color-rgb));
+    border: 1px solid rgb(var(--bs-body-color-rgb));
+}
+
+input::placeholder {
+    color: rgba(var(--bs-placeholder-color-rgb), 0.7);
+}
+
+/* 🎨 Oppdaterer select-felt */
+select, .form-select {
+    background-color: rgb(var(--bs-select-bg-rgb));
+    color: rgb(var(--bs-select-color-rgb));
+    border: 1px solid rgb(var(--bs-body-color-rgb));
+    padding: 0.5rem;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+select:focus, .form-select:focus {
+    border-color: rgb(var(--bs-btn-bg-b-rgb));
+    outline: none;
+    box-shadow: 0 0 5px rgb(var(--bs-btn-bg-b-rgb));
+}
+
+/* 🎨 Oppdaterer vehicle-row */
+.vehicle-row {
+    background-color: rgba(var(--bs-btn-bg-b-rgb), 0.4);
+    color: rgb(var(--bs-body-color-rgb));
+    border: 1px solid rgba(var(--bs-placeholder-color-rgb), 0.7);
+    border-radius: 10px;
+    font-size: 2vh;
+    text-align: center;
+    margin-top: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.vehicle-row:hover {
+    background-color: rgb(var(--bs-btn-hover-bg-rgb));
+    border-style: ridge;
+    cursor: pointer;
+}
+
+/* 🎨 Setter annenhver kolonne i vehicle-row til 50% gjennomsiktighet */
+.vehicle-row > [class^="col"]:nth-child(even) {
+    background-color: rgba(var(--bs-btn-bg-b-rgb), 0.8);
+    border-radius: 15px;
+    margin: 6px;
+    align-content: center;
+}
+.vehicle-row > [class^="col"]:nth-child(odd) {
+    background-color: rgba(var(--bs-btn-bg-b-rgb), 0.4);
+    border-radius: 15px;
+    margin: 6px;
+    align-content: center;
+}
+
+/* 🎨 Oppdaterer vehicle-row-top */
+.vehicle-row-top {
+    background-color: rgb(var(--bs-btn-bg-b-rgb));
+    color: rgb(var(--bs-body-color-rgb));
+    border: 3px solid rgba(var(--bs-placeholder-color-rgb), 0.7);
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+
+.bad {
+    background-color: rgba(202, 130, 130, 0.747);
+}
+
+.middle {
+    background-color: rgba(209, 216, 109, 0.747);
+}
+.good {
+    background-color: rgba(109, 216, 109, 0.747);
+}
+
+.recordInput {
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    background-color: inherit;
+    text-align: center;
+}
+
+.recordInput:hover {
+    cursor:auto;
+}
+
+.recordInput:focus {
+    border: 2px ridge rgba(var(--bs-body-bg-rgb), 0.8);
+    border-radius: 15px;
+    /* border-style: ridge; */
+}
+
+.recordButton {
+    width: 100%; 
+    height: 100%;
+}
+
+.recordButton:hover {
+    border: 2px ridge rgba(var(--bs-body-bg-rgb), 0.8);
+    border-radius: 15px;
+    /* border-style: ridge; */
+}
+
+
+#noneHover {
+    background-color: rgba(var(--bs-btn-bg-b-rgb), 0.4);
+}
+
+#noneHover:nth-child(even) {
+    background-color: rgba(var(--bs-btn-color-b-rgb), 0.5);
+}
+
+.resultColorBox {
+    width: 60%;
+    height: 60%;
+    margin: auto;
+    border-radius: 10px; 
+    align-content: center;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .resultColorBox {
+        font-size: 1vh;
+        width: 100%;
+    }
+
+    .vehicle-row {
+        margin: 10px;
+    }
+
+    button, .btn {
+        font-size: 2vh;
+    }
+}
