@@ -260,16 +260,16 @@ const backgroundStyleOfImage = (result) => ({
             <span v-if="isWatching" style="text-align: center;">
             <h3>Ny fylling</h3>
         </span>
-            <BContainer>
+            <BContainer id="halla" class="new-record-container">
                 <BRow id="noneHover" class="vehicle-row" style="cursor:default;">
                     <BCol style=" overflow: hidden; padding: 0;">
-                        <input class="recordInput" type="text" placeholder="Fyll inn ny killometerstand" v-model="FuelRecord.kilometer"/>
+                        <input class="recordInput" type="text" placeholder="Killometerstand" v-model="FuelRecord.kilometer"/>
                     </BCol>
                     <BCol style=" overflow: hidden; padding: 0;">
-                        <input class="recordInput" type="text" placeholder="Fyll antall liter fylt" v-model="FuelRecord.fuelFilled"/>
+                        <input class="recordInput" type="text" placeholder="Liter fylt" v-model="FuelRecord.fuelFilled"/>
                     </BCol>
                     <BCol style=" overflow: hidden; padding: 0;">
-                        <input class="recordInput" type="text" placeholder="Fyll inn kostnad på drivstoffet" v-model="FuelRecord.price"/>
+                        <input class="recordInput" type="text" placeholder="Betalt" v-model="FuelRecord.price"/>
                     </BCol>
                     <BCol style=" overflow: hidden; padding: 0;">
                         <button class="recordButton" @click="AddRecord">Legg til</button>

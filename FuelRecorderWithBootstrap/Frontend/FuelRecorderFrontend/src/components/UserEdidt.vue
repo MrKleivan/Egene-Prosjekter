@@ -113,7 +113,7 @@ const goBack = () => {
                             placeholder="Gjenta nytt passord" 
                             v-model="userRegistration.newPasswordRepeat"
                             autocomplete="new-password-repeat"
-                            :style="{ backgroundColor: userRegistration.newPassword.length > 0 ? (isPasswordMatch ? 'green' : 'red') : 'transparent' }"
+                            :style="{ backgroundColor: userRegistration.newPassword.length > 0 ? (isPasswordMatch ? 'green' : 'red') : '' }"
                         />
                     </BFormFloatingLabel>
 

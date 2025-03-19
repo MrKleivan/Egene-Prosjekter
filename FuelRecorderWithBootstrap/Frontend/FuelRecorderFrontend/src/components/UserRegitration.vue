@@ -74,13 +74,18 @@ const token = localStorage.getItem('jwtToken');
             <BForm>
                 <h3>Registrer bruker</h3>
                 <BFormFloatingLabel label="Email address/userName" label-for="floatingEmail" class="my-2">
-                    <BFormInput id="floatingEmail" type="email"  placeholder="Email address" v-model="userRegistration.regUsername"/>
+                    <BFormInput id="floatingEmail" type="email"  placeholder="Email address" v-model="userRegistration.regUsername" autocomplete="username"/>
                 </BFormFloatingLabel>
                 <BFormFloatingLabel label="Password" label-for="floatingPassword" class="my-2">
-                    <BFormInput id="floatingPassword" type="password" placeholder="Password" v-model="userRegistration.regPassword"/>
+                    <BFormInput id="floatingPassword" type="password" placeholder="Password" v-model="userRegistration.regPassword" autocomplete="password"/>
                 </BFormFloatingLabel>
                 <BFormFloatingLabel label="RepeatPassword" label-for="floatingPasswordRe" class="my-2">
-                    <BFormInput id="floatingPasswordRe" :style="{ backgroundColor: userRegistration.regRePassword.length > 0 ? (isPasswordMatch ? 'green' : 'red') : 'transparent' }" type="password" placeholder="PasswordRe" v-model="userRegistration.regRePassword"/>
+                    <BFormInput id="floatingPasswordRe" 
+                    :style="{ backgroundColor: userRegistration.regRePassword.length > 0 ? (isPasswordMatch ? 'green' : 'red') : '' }" 
+                    type="password" 
+                    placeholder="RepeatPassword" 
+                    v-model="userRegistration.regRePassword" 
+                    autocomplete="new-password"/>
                 </BFormFloatingLabel>
                 <BButton size="sm" @click="RegUser" variant="dark">Registrer bruker</BButton>
             </BForm>

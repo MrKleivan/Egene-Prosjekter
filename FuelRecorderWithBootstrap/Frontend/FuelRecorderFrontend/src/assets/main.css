@@ -4,7 +4,10 @@
   }
 
 body {
-font-size: 100%;
+    height: 100vh;
+    font-size: 100%;
+    background-color: rgba(var(--bs-body-bg-rgb), 0.2);
+    color: rgb(var(--bs-body-color-rgb));
 }
 
 [data-bs-theme="dark"] {
@@ -20,7 +23,7 @@ font-size: 100%;
 }
 
 [data-bs-theme="light"] {
-    --bs-body-bg-rgb: 255, 255, 255;
+    --bs-body-bg-rgb: 230, 235, 235;
     --bs-body-color-rgb: 0, 0, 0;
     --bs-btn-bg-b-rgb: 150, 186, 201;
     --bs-btn-hover-bg-rgb: 208, 208, 208;
@@ -32,19 +35,28 @@ font-size: 100%;
 }
 
 [data-bs-theme="med"] {
-    --bs-body-bg-rgb: 31, 30, 121;
-    --bs-body-color-rgb: 71, 23, 23;
-    --bs-btn-bg-b-rgb: 92, 91, 223;
-    --bs-btn-hover-bg-rgb: 71, 70, 195;
-    --bs-input-bg-rgb: 56, 55, 163;
-    --bs-input-color-rgb: 255, 255, 255;
-    --bs-select-bg-rgb: 56, 55, 163;
-    --bs-select-color-rgb: 255, 255, 255;
-    --bs-placeholder-color-rgb: 255, 255, 255;
+    --bs-body-bg-rgb: 245, 233, 216;    
+    --bs-body-color-rgb: 67, 42, 28;      
+    --bs-btn-bg-b-rgb: 193, 154, 107; 
+    --bs-btn-hover-bg-rgb: 163, 123, 84;
+    --bs-input-bg-rgb: 255, 248, 240;    
+    --bs-input-color-rgb: 67, 42, 28;    
+    --bs-select-bg-rgb: 255, 248, 240;   
+    --bs-select-color-rgb: 67, 42, 28;   
+    --bs-placeholder-color-rgb: 123, 88, 65; 
 }
 
 
-/* 🎨 Oppdaterer knapper */
+
+header {
+    width: 70vw;
+    max-height: 10vh;
+    margin: auto;
+    align-content: center;
+    border-radius: 0 0 10px 10px;
+    background-color: rgba(var(--bs-body-color-rgb), 0.1);
+}
+
 button, .btn {
     background-color: rgb(var(--bs-btn-bg-b-rgb));
     color: rgb(var(--bs-body-color-rgb));
@@ -57,7 +69,7 @@ button:hover, .btn:hover {
     background-color: rgb(var(--bs-btn-hover-bg-rgb));
 }
 
-/* 🎨 Oppdaterer input-felt */
+
 input, .form-control {
     background-color: rgb(var(--bs-input-bg-rgb));
     color: rgb(var(--bs-input-color-rgb));
@@ -74,7 +86,7 @@ input::placeholder {
     color: rgba(var(--bs-placeholder-color-rgb), 0.7);
 }
 
-/* 🎨 Oppdaterer select-felt */
+
 select, .form-select {
     background-color: rgb(var(--bs-select-bg-rgb));
     color: rgb(var(--bs-select-color-rgb));
@@ -90,7 +102,7 @@ select:focus, .form-select:focus {
     box-shadow: 0 0 5px rgb(var(--bs-btn-bg-b-rgb));
 }
 
-/* 🎨 Oppdaterer vehicle-row */
+
 .vehicle-row {
     background-color: rgba(var(--bs-btn-bg-b-rgb), 0.4);
     color: rgb(var(--bs-body-color-rgb));
@@ -108,7 +120,7 @@ select:focus, .form-select:focus {
     cursor: pointer;
 }
 
-/* 🎨 Setter annenhver kolonne i vehicle-row til 50% gjennomsiktighet */
+
 .vehicle-row > [class^="col"]:nth-child(even) {
     background-color: rgba(var(--bs-btn-bg-b-rgb), 0.8);
     border-radius: 15px;
@@ -124,7 +136,7 @@ select:focus, .form-select:focus {
     align-content: center;
 }
 
-/* 🎨 Oppdaterer vehicle-row-top */
+
 .vehicle-row-top {
     background-color: rgb(var(--bs-btn-bg-b-rgb));
     color: rgb(var(--bs-body-color-rgb));
@@ -161,7 +173,6 @@ select:focus, .form-select:focus {
 .recordInput:focus {
     border: 2px ridge rgba(var(--bs-body-bg-rgb), 0.8);
     border-radius: 15px;
-    /* border-style: ridge; */
 }
 
 .recordButton {
@@ -172,7 +183,6 @@ select:focus, .form-select:focus {
 .recordButton:hover {
     border: 2px ridge rgba(var(--bs-body-bg-rgb), 0.8);
     border-radius: 15px;
-    /* border-style: ridge; */
 }
 
 
@@ -194,6 +204,11 @@ select:focus, .form-select:focus {
 
 
 @media only screen and (max-width: 600px) {
+
+    header {
+        width: 100vw;
+    }
+
     .resultColorBox {
         font-size: 1.5vh;
     }
@@ -205,10 +220,21 @@ select:focus, .form-select:focus {
     button, .btn {
         font-size: 2vh;
     }
+
+    .new-record-container .vehicle-row {
+        flex-direction: column;
+        align-items: center;
+    }
+    .new-record-container .vehicle-row > .col {
+        width: 95%;
+        margin-bottom: 0.3rem;
+        background-color: rgba(var(--bs-btn-bg-b-rgb), 0.2);
+        border: thin solid rgb(var(--bs-body-color-rgb));
+    }
 }
 
 
-@media only screen and (max-width: 320px) {
+@media only screen and (max-width: 330px) {
     .resultColorBox {
         font-size: 1vh;
         width: 98%;
