@@ -51,7 +51,6 @@ public class FuelRecords
     
     public async Task<IResult> GetAllFuelRecordsFromUserByUserId(int id)
     {
-        Console.Write(id);
         var fuelRecorders = new List<FuelRecorderModel>();
         using (var conn = new SqlConnection(_connectionString))
         {
@@ -86,7 +85,6 @@ public class FuelRecords
     
     public async Task<IResult> GetAllFuelRecordsFromUserByVehicleId(int id)
     {
-        Console.Write(id);
         var fuelRecorders = new List<FuelRecorderModel>();
         using (var conn = new SqlConnection(_connectionString))
         {
@@ -124,8 +122,12 @@ public class FuelRecords
         using (var conn = new SqlConnection(_connectionString))
         {
             await conn.OpenAsync();
-            
-            var query = "INSERT INTO FuelRecords (Kilometer, FuelFilled, Price, UserId, VehicleId) VALUES (@kilometer, @fuelFilled, @price, @userId, @vehicleId)";
+        
+            var query = @"
+            INSERT INTO FuelRecords (Kilometer, FuelFilled, Price, UserId, VehicleId)
+            VALUES (@kilometer, @fuelFilled, @price, @userId, @vehicleId);
+            SELECT SCOPE_IDENTITY();"; // 🔹 Returnerer ID-en til den siste innsettingen
+
             using (var command = new SqlCommand(query, conn))
             {
                 command.Parameters.AddWithValue("@kilometer", fuelRecorderModel.Kilometer);
@@ -133,16 +135,11 @@ public class FuelRecords
                 command.Parameters.AddWithValue("@price", fuelRecorderModel.Price);
                 command.Parameters.AddWithValue("@userId", fuelRecorderModel.UserId);
                 command.Parameters.AddWithValue("@vehicleId", fuelRecorderModel.VehicleId);
-                
-                int rowsAffected = await command.ExecuteNonQueryAsync();
-                if (rowsAffected > 0)
-                {
-                    return Results.Ok();
-                }
-                else
-                {
-                    return Results.BadRequest("Error ved opplasting av data");
-                }
+
+                var newId = Convert.ToInt32(await command.ExecuteScalarAsync());
+
+                Console.WriteLine($"✅ Ny FuelRecord lagt til med ID: {newId}");
+                return Results.Ok(new { Id = newId, Message = "Fuel record added successfully!" });
             }
         }
     }

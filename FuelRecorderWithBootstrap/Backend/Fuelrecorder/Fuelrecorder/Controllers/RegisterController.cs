@@ -1,5 +1,7 @@
 using System.Data.SqlClient;
 using Fuelrecorder.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fuelrecorder.Controllers;
@@ -53,4 +55,75 @@ public class RegisterController : ControllerBase
             
         }
     }
+    
+    [HttpPut("update"), Authorize]
+    public async Task<IResult> Update([FromBody] UserUpdateRequest request)
+    {
+        string connectionString = _configuration.GetConnectionString("DefaultConnection");
+        string currentPasswordHash = "";
+    
+        if (string.IsNullOrWhiteSpace(request.NewPassword))
+        {
+            return Results.BadRequest("Nytt passord må oppgis.");
+        }
+    
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            await connection.OpenAsync();
+    
+            // Sjekk om brukeren eksisterer og hent passordhash
+            string checkQuery = "SELECT UserName, PasswordHash FROM Users WHERE Id = @id";
+            using (SqlCommand checkCmd = new SqlCommand(checkQuery, connection))
+            {
+                checkCmd.Parameters.AddWithValue("@id", request.Id);
+    
+                using (SqlDataReader reader = await checkCmd.ExecuteReaderAsync())
+                {
+                    if (!reader.HasRows)
+                    {
+                        return Results.NotFound("Bruker ikke funnet");
+                    }
+    
+                    await reader.ReadAsync();
+                    currentPasswordHash = reader["PasswordHash"].ToString();
+    
+                    // Sjekk om det nåværende passordet er korrekt
+                    if (currentPasswordHash != request.CurrentPassword)
+                    {
+                        return Results.BadRequest("Feil passord");
+                    }
+                }
+            }
+
+            string updateQuery = "";
+
+            if (currentPasswordHash == request.NewPassword || request.NewPassword.Length > 2)
+            {
+                updateQuery = "UPDATE Users SET UserName = @Username WHERE Id = @id";
+            } 
+            else if (currentPasswordHash != request.NewPassword)
+            {
+                updateQuery = "UPDATE Users SET UserName = @Username, PasswordHash = @PasswordHash WHERE Id = @id";
+            }
+    
+            using (SqlCommand updateCmd = new SqlCommand(updateQuery, connection))
+            {
+                updateCmd.Parameters.AddWithValue("@id", request.Id);
+                updateCmd.Parameters.AddWithValue("@Username", request.NewUsername);
+                updateCmd.Parameters.AddWithValue("@PasswordHash", request.NewPassword);
+    
+                int rowsAffected = await updateCmd.ExecuteNonQueryAsync();
+    
+                if (rowsAffected > 0)
+                {
+                    return Results.Ok("Bruker er oppdatert.");
+                }
+                else
+                {
+                    return Results.BadRequest("Ingen endringer ble gjort.");
+                }
+            }
+        }
+    }
+
 }

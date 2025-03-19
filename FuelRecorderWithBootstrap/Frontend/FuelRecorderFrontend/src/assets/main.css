@@ -113,12 +113,14 @@ select:focus, .form-select:focus {
     background-color: rgba(var(--bs-btn-bg-b-rgb), 0.8);
     border-radius: 15px;
     margin: 6px;
+    padding: 0;
     align-content: center;
 }
 .vehicle-row > [class^="col"]:nth-child(odd) {
     background-color: rgba(var(--bs-btn-bg-b-rgb), 0.4);
     border-radius: 15px;
     margin: 6px;
+    padding: 0;
     align-content: center;
 }
 
@@ -185,23 +187,43 @@ select:focus, .form-select:focus {
 .resultColorBox {
     width: 60%;
     height: 60%;
-    margin: auto;
-    border-radius: 10px; 
+    border-radius: 10px;
     align-content: center;
+    margin: auto;
 }
 
 
 @media only screen and (max-width: 600px) {
     .resultColorBox {
-        font-size: 1vh;
-        width: 100%;
+        font-size: 1.5vh;
     }
 
-    .vehicle-row {
+    .vehicle-row, .vehicle-row-top {
         margin: 10px;
     }
 
     button, .btn {
         font-size: 2vh;
+    }
+}
+
+
+@media only screen and (max-width: 320px) {
+    .resultColorBox {
+        font-size: 1vh;
+        width: 98%;
+        height: 98%;
+    }
+
+    .vehicle-row, .vehicle-row-top {
+        margin: 10px;
+    }
+
+    button, .btn {
+        font-size: 1.3vh;
+    }
+
+    #resultColorBox-Conteiner {
+        width: 100%;
     }
 }

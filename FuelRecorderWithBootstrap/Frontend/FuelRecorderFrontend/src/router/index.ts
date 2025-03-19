@@ -14,7 +14,7 @@ import UserEdidtView from '@/views/UserEdidtView.vue'
 //@ts-ignore
 import VehicleEdidtView from '@/views/VehicleEdidtView.vue'
 //@ts-ignore
-import VehicalNavigation from '@/components/VehicalNavigation.vue'
+import VehicleNavigationView from '@/views/VehicleNavigationView.vue'
 //@ts-ignore
 import VehiclesView from '@/views/VehiclesView.vue'
 
@@ -59,7 +59,7 @@ const router = createRouter({
     {
       path: '/vehicleNav',
       name: 'vehicleNav',
-      component: VehicalNavigation,
+      component: VehicleNavigationView,
       meta: { requiresAuth: true },
     },
     {

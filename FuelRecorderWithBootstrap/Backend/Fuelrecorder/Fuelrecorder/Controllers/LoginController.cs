@@ -84,7 +84,8 @@ public class LoginController : ControllerBase
         return Ok(new
         {
             token = tokenString,
-            userId = user.Id
+            userId = user.Id,
+            userName = user.Username,
         });
     }
     

@@ -65,7 +65,7 @@ public class Vehicles
                         Name = reader.GetString(reader.GetOrdinal("Name")),
                         Brand = reader.GetString(reader.GetOrdinal("Brand")),
                         Fuel = reader.GetString(reader.GetOrdinal("Fuel")),
-                        StartKilometer = reader.GetInt32(reader.GetOrdinal("Id")),
+                        StartKilometer = reader.GetInt32(reader.GetOrdinal("StartKilometer")),
                         UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
                     });
                 }

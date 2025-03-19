@@ -1,103 +1,131 @@
-<script setup lang="ts">
-import { BButton } from 'bootstrap-vue-next';
-import { reactive, ref , computed} from 'vue';
+<script setup>
+import { BButton, BFormFloatingLabel, BFormInput, BContainer, BRow, BCol, BForm } from 'bootstrap-vue-next';
+import { reactive, ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
-const error = ref<string | null>(null);
+const error = ref(null);
 const loading = ref(false);
 
 const userRegistration = reactive({
-    regUsername: route.query.username || '',
-    name: '',
-    regPassword: '',
-    regRePassword: ''
-}
+    id: localStorage.getItem('userId') || '',  // Henter bruker-ID fra localStorage
+    oldUserName: localStorage.getItem('userName') || '',
+    newUserName: '',
+    oldPassword: '',
+    newPassword: '',
+    newPasswordRepeat: ''
+});
+
+const isPasswordMatch = computed(() => 
+    (userRegistration.newPassword.length > 0 && userRegistration.newPassword === userRegistration.newPasswordRepeat)
+    || ( userRegistration.newPassword.length < 1)
 );
 
-const isPasswordMatch = computed(() => {
-  return userRegistration.regPassword.length > 0 &&
-         userRegistration.regPassword === userRegistration.regRePassword;
-}); 
-
-const EdidtUser = async () => {
+const EditUser = async () => {
     loading.value = true;
     error.value = null;
 
     if (!isPasswordMatch.value) {
-    error.value = "Passordene stemmer ikke overens";
-    loading.value = false;
-    return;
+        error.value = "Passordene stemmer ikke overens";
+        loading.value = false;
+        return;
     }
 
     try {
-        const response = await fetch('/register', {
-            method: 'POST',
+        const token = localStorage.getItem('jwtToken'); // Henter token i funksjonen
+
+        const response = await fetch(`/Register/update`, {
+            method: 'PUT', 
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
-                username: userRegistration.regUsername,
-                passwordHash: userRegistration.regPassword
+                id: userRegistration.id,
+                newUsername: userRegistration.newUserName,
+                currentPassword: userRegistration.oldPassword,
+                newPassword: userRegistration.newPasswordRepeat
             })
         });
 
-        if(!response.ok){
-            throw new Error('Registrering mislyktes');
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Oppdatering mislyktes');
         }
-
-        const data = await response.json();
+        
         await router.push('/');
 
-    } catch (err: any) {
+    } catch (err) {
         error.value = err.message;
     } finally {
         loading.value = false;
     }
-}
+};
+
+const confirmUpdate = async () => {
+    if (confirm("Er du sikker på at du vil gjøre denne endringen?")) {
+        await EditUser();
+        router.push('/edidt');
+    }
+};
 
 const goBack = () => {
-    router.push('/edidt')
-}
+    router.push('/edidt'); 
+    console.log(localStorage.getItem('userName'))
+};
 
-
-const token = localStorage.getItem('jwtToken');
-</script>
+</script>µ
 
 <template>
+    <BContainer class="bv-example-row">
+        <BRow>
+            <BCol sm></BCol>
+            <BCol sm>
+                <BForm>
+                    <h3>Oppdater bruker</h3>
+                    
+                    <BFormFloatingLabel label="Eksisterende Brukernavn" label-for="OldUserName" class="my-2">
+                        <BFormInput id="OldUserName" type="email" placeholder="Email address" v-model="userRegistration.oldUserName" autocomplete="oldUsername"/>
+                    </BFormFloatingLabel>
+                    <BFormFloatingLabel label="Nytt Brukernavn" label-for="NewUserName" class="my-2">
+                        <BFormInput id="NewUserName" type="email" placeholder="Email address" v-model="userRegistration.newUserName" autocomplete="newUsername"/>
+                    </BFormFloatingLabel>
 
-<BContainer class="bv-example-row">
-    <BRow>
-        <BCol sm>
+                    <BFormFloatingLabel label="Gjeldene Passord" label-for="floatingPassword" class="my-2">
+                        <BFormInput id="floatingPassword" type="password" autocomplete="current-password" placeholder="Nåværende passord" v-model="userRegistration.oldPassword"/>
+                    </BFormFloatingLabel>
 
-        </BCol>
-        <BCol sm>
-            <BForm>
-                <h3>Registrer bruker</h3>
-                <BFormFloatingLabel label="Email address/userName" label-for="floatingEmail" class="my-2">
-                    <BFormInput id="floatingEmail" type="email"  placeholder="Email address" v-model="userRegistration.regUsername"/>
-                </BFormFloatingLabel>
-                <BFormFloatingLabel label="Name" label-for="floatingName" class="my-2">
-                    <BFormInput id="floatingName" type="text" placeholder="Name" v-model="userRegistration.name"/>
-                </BFormFloatingLabel>
-                <BFormFloatingLabel label="Password" label-for="floatingPassword" class="my-2">
-                    <BFormInput id="floatingPassword" type="password" placeholder="Password" v-model="userRegistration.regPassword"/>
-                </BFormFloatingLabel>
-                <BFormFloatingLabel label="RepeatPassword" label-for="floatingPasswordRe" class="my-2">
-                    <BFormInput id="floatingPasswordRe" :style="{ backgroundColor: userRegistration.regRePassword.length > 0 ? (isPasswordMatch ? 'green' : 'red') : 'transparent' }" type="password" placeholder="PasswordRe" v-model="userRegistration.regRePassword"/>
-                </BFormFloatingLabel>
-                <BButton pill class="mx-2" @click="EdidtUser" variant="dark">Lagre</BButton>
-                <BButton pill class="mx-2" @click="goBack" variant="dark">Tilbak</BButton>
-            </BForm>
-        </BCol>
-        <BCol sm>
+                    <BFormFloatingLabel label="Nytt passord" label-for="newPassword" class="my-2">
+                        <BFormInput 
+                            id="newPassword" 
+                            type="password" 
+                            placeholder="Nytt passord" 
+                            v-model="userRegistration.newPassword"
+                            autocomplete="new-password"
+                        />
+                    </BFormFloatingLabel>
 
-        </BCol>
-    </BRow>
-</BContainer>
+                    <BFormFloatingLabel label="Gjenta nytt passord" label-for="newPasswordRepeat" class="my-2">
+                        <BFormInput 
+                            id="newPasswordRepeat" 
+                            type="password" 
+                            placeholder="Gjenta nytt passord" 
+                            v-model="userRegistration.newPasswordRepeat"
+                            autocomplete="new-password-repeat"
+                            :style="{ backgroundColor: userRegistration.newPassword.length > 0 ? (isPasswordMatch ? 'green' : 'red') : 'transparent' }"
+                        />
+                    </BFormFloatingLabel>
+
+                    <p v-if="error" class="text-danger">{{ error }}</p>
+
+                    <BButton pill class="mx-2" @click="confirmUpdate" variant="dark" :disabled="loading">
+                        {{ loading ? 'Lagrer...' : 'Lagre' }}
+                    </BButton>
+                    <BButton pill class="mx-2" @click="goBack" variant="dark">Tilbake</BButton>
+                </BForm>
+            </BCol>
+            <BCol sm></BCol>
+        </BRow>
+    </BContainer>
 </template>
-
-<style>
-
-</style>

@@ -12,9 +12,8 @@ const router = useRouter();
     <br/>
     <BRow>
         <BCol sm style="text-align: center;">
-            <BButton class="mx-2" @click="router.push('/regVehicle')" variant="dark">Registrer nytt kjøretøy</BButton>
-            <BButton class="mx-2" @click="router.push('/edidtVehicle')" variant="dark">Endre ett kjøretøy</BButton>
-            <BButton class="mx-2" @click="router.push('/vehicleList')" variant="dark">Kjøretøy oversikt</BButton>
+            <BButton class="mx-2" @click="router.push('/regVehicle')" variant="dark">Registrer et nytt kjøretøy</BButton>
+            <BButton class="mx-2" @click="router.push('/vehicleList')" variant="dark">Eksisterende kjøretøy oversikt</BButton>
         </BCol>
     </BRow>
 </template>

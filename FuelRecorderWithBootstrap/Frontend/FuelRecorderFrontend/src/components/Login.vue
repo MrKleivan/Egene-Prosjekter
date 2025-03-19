@@ -35,7 +35,9 @@ const LoginUser = async () => {
         const data = await response.json();
         localStorage.setItem('jwtToken', data.token);
         localStorage.setItem('userId', data.userId);
+        localStorage.setItem('userName', data.userName);
         router.push({name: 'ProtectedPage'});
+        console.log(data.userName);
 
     } catch (err) {
         error.value = err.message;

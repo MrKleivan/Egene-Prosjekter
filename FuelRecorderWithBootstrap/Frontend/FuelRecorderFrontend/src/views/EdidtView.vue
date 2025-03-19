@@ -10,8 +10,8 @@ const router = useRouter();
     <MyHeader />  
     <br />
     <BCol sm style="text-align: center;">
-        <BButton class="mx-2" size="sm" @click="router.push('/edidtUser')" variant="dark">Rediger bruker</BButton>
-        <BButton class="mx-2" size="sm" @click="router.push('/edidtVehicle')" variant="dark">Rediger kjøretøy</BButton>
+        <BButton class="mx-2" size="sm" @click="router.push('/edidtUser')" variant="dark">Bruker</BButton>
+        <BButton class="mx-2" size="sm" @click="router.push('/vehicleNav')" variant="dark">Kjøretøy</BButton>
     </BCol>
 
 </template>

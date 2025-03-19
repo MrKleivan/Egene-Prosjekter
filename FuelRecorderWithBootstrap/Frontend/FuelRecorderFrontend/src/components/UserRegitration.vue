@@ -1,11 +1,11 @@
-<script setup lang="ts">
-import { BButton } from 'bootstrap-vue-next';
+<script setup>
+import { BButton, BFormFloatingLabel, BFormInput } from 'bootstrap-vue-next';
 import { reactive, ref , computed} from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
-const error = ref<string | null>(null);
+const error = ref(null);
 const loading = ref(false);
 
 const userRegistration = reactive({
@@ -32,7 +32,7 @@ const RegUser = async () => {
     }
 
     try {
-        const response = await fetch('/register', {
+        const response = await fetch('/Register/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ const RegUser = async () => {
         const data = await response.json();
         await router.push('/');
 
-    } catch (err: any) {
+    } catch (err) {
         error.value = err.message;
     } finally {
         loading.value = false;
@@ -75,9 +75,6 @@ const token = localStorage.getItem('jwtToken');
                 <h3>Registrer bruker</h3>
                 <BFormFloatingLabel label="Email address/userName" label-for="floatingEmail" class="my-2">
                     <BFormInput id="floatingEmail" type="email"  placeholder="Email address" v-model="userRegistration.regUsername"/>
-                </BFormFloatingLabel>
-                <BFormFloatingLabel label="Name" label-for="floatingName" class="my-2">
-                    <BFormInput id="floatingName" type="text" placeholder="Name" v-model="userRegistration.name"/>
                 </BFormFloatingLabel>
                 <BFormFloatingLabel label="Password" label-for="floatingPassword" class="my-2">
                     <BFormInput id="floatingPassword" type="password" placeholder="Password" v-model="userRegistration.regPassword"/>

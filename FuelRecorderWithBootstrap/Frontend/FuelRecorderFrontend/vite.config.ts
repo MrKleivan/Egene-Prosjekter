@@ -44,8 +44,8 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
-      '/register': {
-        target: 'https://localhost:7213/Register',
+      '/Register': {
+        target: 'https://localhost:7213',
         changeOrigin: true,
         secure: false,
       },
