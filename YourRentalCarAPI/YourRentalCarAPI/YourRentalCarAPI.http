@@ -1,0 +1,10 @@
+@YourRentalCarAPI_HostAddress = https://localhost:7114
+
+GET {{YourRentalCarAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{YourRentalCarAPI_HostAddress}}/weatherforecast
+
+###
