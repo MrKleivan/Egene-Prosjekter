@@ -186,32 +186,32 @@ const backgroundStyleOfImage = (result) => ({
         <br />
         <BButton v-if="isWatching" @click="goBack">Tilbake</BButton>
         <div v-if="Vehicles != null">
-            <BContainer class="bv-example-row">
-                <span v-if="!isWatching"><h3>Dine kjøretøys totale målinger</h3></span>
-                <span v-if="isWatching"><h3>{{ Vehicles[0].name }}</h3></span>
+            <BContainer>
+                <br/>
+                <span v-if="!isWatching"><h4>Dine kjøretøys totale målinger</h4></span>
+                <span v-if="isWatching"><h2>{{ Vehicles[0].name }}</h2></span>
                 <BRow class="vehicle-row"
                 v-for="result in Results" :key="result.id"
-                style="height: 15vh; margin-top: 5vh; "
                 @click="GetRecordsByVehicleId(result.id);">
-                <BCol>
-                    <div style=" width: 100%; height: 100%;" :style="backgroundStyleOfImage(result.type)">
-                    </div>
-                </BCol>
-                <BCol>
-                    {{ result.name }} 
-                </BCol>
-                <BCol>
-                    <div class="resultColorBox" 
-                    :class="
-                    result.literPrMil > 1.5 ? 'bad' 
-                    : result.literPrMil >= 0.9 ? 'medium' 
-                    : result.literPrMil == 0 ? '' : 'good'
-                    ">
-                    <span style="color: whitesmoke;">{{ !result.literPrMil ? 'Ingen målinger' : parseFloat(result.literPrMil).toFixed(2) }} l/mil</span>
-                    <br/> 
-                    <span style="color: whitesmoke;">{{ result.costPrLiter == 0 ? 'Ingen målinger' : parseFloat(result.costPrLiter).toFixed(2) }} kr/l</span>
-                    </div>
-                </BCol>
+                    <BCol>
+                        <div style=" width: 100%; height: 100%;" :style="backgroundStyleOfImage(result.type)">
+                        </div>
+                    </BCol>
+                    <BCol class="vehicle-row-reult-name">
+                        {{ result.brand }} 
+                    </BCol>
+                    <BCol>
+                        <div class="resultColorBox" 
+                        :class="
+                        result.literPrMil > 1.5 ? 'bad' 
+                        : result.literPrMil >= 0.9 ? 'medium' 
+                        : result.literPrMil == 0 ? '' : 'good'
+                        ">
+                        <span style="color: whitesmoke;">{{ !result.literPrMil ? 'Ingen målinger' : parseFloat(result.literPrMil).toFixed(2) }} l/mil</span>
+                        <br/> 
+                        <span style="color: whitesmoke;">{{ result.costPrLiter == 0 ? 'Ingen målinger' : parseFloat(result.costPrLiter).toFixed(2) }} kr/l</span>
+                        </div>
+                    </BCol>
                 </BRow>
             </BContainer>
             <br/>
@@ -226,7 +226,7 @@ const backgroundStyleOfImage = (result) => ({
             <h3>Registrerte fyllinger</h3>
         </span>
         <div v-if="isWatching">
-            <BContainer>
+            <BContainer class="vehicle-row-records-container">
                 <BRow class="vehicle-row-top">
                     <BCol>
                         Killometer
@@ -241,27 +241,33 @@ const backgroundStyleOfImage = (result) => ({
 
                     </BCol>
                 </BRow>
-                <BRow v-for="record in FuelRecords" id="noneHover" class="vehicle-row">
-                    <BCol>
-                        {{ record.kilometer }}
-                    </BCol>
-                    <BCol>
-                        {{ record.fuelFilled }}
-                    </BCol>
-                    <BCol>
-                        {{ record.price }}
-                    </BCol>
-                    <BCol style=" overflow: hidden; padding: 0;">
-                        <button class="recordButton" @click="confirmDelete(record.id, record.vehicleId)">Slett</button>
-                    </BCol>
+                <BContainer class="records-container">
+                    <BRow v-for="record in FuelRecords" id="noneHover" class="vehicle-row-records">
+                        <BCol>
+                            {{ record.kilometer }}
+                        </BCol>
+                        <BCol>
+                            {{ record.fuelFilled }}
+                        </BCol>
+                        <BCol>
+                            {{ record.price }}
+                        </BCol>
+                        <BCol style=" overflow: hidden; padding: 0;">
+                            <button class="recordButton" @click="confirmDelete(record.id, record.vehicleId)">Slett</button>
+                        </BCol>
+                    </BRow>
+                </BContainer>
+                <BRow class="vehicle-row-bottom">
                 </BRow>
             </BContainer>
             <br />
             <span v-if="isWatching" style="text-align: center;">
             <h3>Ny fylling</h3>
-        </span>
-            <BContainer id="halla" class="new-record-container">
-                <BRow id="noneHover" class="vehicle-row" style="cursor:default;">
+            </span>
+            <BContainer class="new-record-container">
+                <BRow class="vehicle-row-top">
+                </BRow>
+                <BRow id="noneHover" class="vehicle-row-new-records" style="cursor:default;">
                     <BCol style=" overflow: hidden; padding: 0;">
                         <input class="recordInput" type="text" placeholder="Killometerstand" v-model="FuelRecord.kilometer"/>
                     </BCol>
@@ -274,6 +280,8 @@ const backgroundStyleOfImage = (result) => ({
                     <BCol style=" overflow: hidden; padding: 0;">
                         <button class="recordButton" @click="AddRecord">Legg til</button>
                     </BCol>
+                </BRow>
+                <BRow class="vehicle-row-bottom">
                 </BRow>
             </BContainer>
         </div>

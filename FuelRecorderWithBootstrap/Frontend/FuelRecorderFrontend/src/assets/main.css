@@ -104,14 +104,14 @@ select:focus, .form-select:focus {
 
 
 .vehicle-row {
+    min-height: 15vh;
     background-color: rgba(var(--bs-btn-bg-b-rgb), 0.4);
     color: rgb(var(--bs-body-color-rgb));
     border: 1px solid rgba(var(--bs-placeholder-color-rgb), 0.7);
     border-radius: 10px;
-    font-size: 2vh;
+    font-size: 1.2vw;
     text-align: center;
-    margin-top: 5px;
-    transition: all 0.3s ease-in-out;
+    margin-top: 5vh;
 }
 
 .vehicle-row:hover {
@@ -122,28 +122,28 @@ select:focus, .form-select:focus {
 
 
 .vehicle-row > [class^="col"]:nth-child(even) {
-    background-color: rgba(var(--bs-btn-bg-b-rgb), 0.8);
     border-radius: 15px;
-    margin: 6px;
+    margin: 4px;
     padding: 0;
     align-content: center;
 }
 .vehicle-row > [class^="col"]:nth-child(odd) {
     background-color: rgba(var(--bs-btn-bg-b-rgb), 0.4);
     border-radius: 15px;
-    margin: 6px;
+    margin: 4px;
     padding: 0;
     align-content: center;
 }
 
 
 .vehicle-row-top {
+    height: 4vh;
     background-color: rgb(var(--bs-btn-bg-b-rgb));
     color: rgb(var(--bs-body-color-rgb));
-    border: 3px solid rgba(var(--bs-placeholder-color-rgb), 0.7);
-    padding: 10px;
-    border-radius: 10px;
+    border: 2px solid rgba(var(--bs-placeholder-color-rgb), 0.7);
+    border-radius: 10px 10px 0 0;
     text-align: center;
+    align-content: center;
 }
 
 
@@ -176,13 +176,15 @@ select:focus, .form-select:focus {
 }
 
 .recordButton {
-    width: 100%; 
-    height: 100%;
+    width: 40%; 
+    height: 90%;
+    border: 1px solid rgba(var(--bs-placeholder-color-rgb), 0.7);
+    border-radius: 5px;
 }
 
 .recordButton:hover {
-    border: 2px ridge rgba(var(--bs-body-bg-rgb), 0.8);
-    border-radius: 15px;
+    border: 1px ridge rgba(var(--bs-body-bg-rgb), 0.8);
+    border-radius: 5px;
 }
 
 
@@ -202,6 +204,47 @@ select:focus, .form-select:focus {
     margin: auto;
 }
 
+.vehicle-row-reult-name {
+    color: rgba(var(--bs-body-bg-rgb), 0.9);
+    font-size: 4vw;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    overflow: hidden;
+}
+
+.vehicle-row-records {
+    margin: 4px;
+    overflow: hidden;
+}
+
+.vehicle-row-new-records {
+    margin: 4px;
+}
+
+.vehicle-row-bottom {
+    height: 4vh;
+    background-color: rgb(var(--bs-btn-bg-b-rgb));
+    color: rgb(var(--bs-body-color-rgb));
+    border: 2px solid rgba(var(--bs-placeholder-color-rgb), 0.7);
+    border-radius: 0 0 10px 10px;
+    text-align: center;
+}
+
+.vehicle-row-records-container, .new-record-container {
+    background-color: rgba(var(--bs-btn-bg-b-rgb), 0.2);
+    border-radius: 10px;
+}
+
+
+
+@media only screen and (max-width: 1100px) {
+    .vehicle-row-reult-name {
+        font-size: 5vw;
+    }
+    .recordButton {
+        width: 60%;
+    }
+}
 
 @media only screen and (max-width: 600px) {
 
@@ -214,11 +257,15 @@ select:focus, .form-select:focus {
     }
 
     .vehicle-row, .vehicle-row-top {
-        margin: 10px;
+        padding: 4px;
+    }
+
+    .noneHover.vehicle-row {
+        height: 10vh;
     }
 
     button, .btn {
-        font-size: 2vh;
+        font-size: 2.5vw;
     }
 
     .new-record-container .vehicle-row {
@@ -231,25 +278,43 @@ select:focus, .form-select:focus {
         background-color: rgba(var(--bs-btn-bg-b-rgb), 0.2);
         border: thin solid rgb(var(--bs-body-color-rgb));
     }
+
+    .vehicle-row-reult-name {
+        display: none;
+    }
 }
 
 
-@media only screen and (max-width: 330px) {
+@media only screen and (max-width: 365px) {
+
+
     .resultColorBox {
-        font-size: 1vh;
+        font-size: 3vw;
         width: 98%;
         height: 98%;
     }
 
-    .vehicle-row, .vehicle-row-top {
-        margin: 10px;
+    .vehicle-row {
+        padding: 0px;
     }
 
-    button, .btn {
-        font-size: 1.3vh;
+    .vehicle-row-top {
+        font-size: 3vw;
+        padding: 1px;
+        border-width: 1px;
     }
+
+    .recordInput {
+        height: 4vh;
+    }
+
 
     #resultColorBox-Conteiner {
         width: 100%;
     }
+
+    .vehicle-row-records {
+        font-size: 3vw;
+    }
+    
 }

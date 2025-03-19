@@ -61,10 +61,13 @@ public class RegisterController : ControllerBase
     {
         string connectionString = _configuration.GetConnectionString("DefaultConnection");
         string currentPasswordHash = "";
-    
-        if (string.IsNullOrWhiteSpace(request.NewPassword))
+
+        if (request.NewPassword != "")
         {
-            return Results.BadRequest("Nytt passord må oppgis.");
+            if (string.IsNullOrWhiteSpace(request.NewPassword))
+            {
+                return Results.BadRequest("Nytt passord må oppgis.");
+            }
         }
     
         using (SqlConnection connection = new SqlConnection(connectionString))
@@ -97,7 +100,7 @@ public class RegisterController : ControllerBase
 
             string updateQuery = "";
 
-            if (currentPasswordHash == request.NewPassword || request.NewPassword.Length > 2)
+            if (currentPasswordHash == request.NewPassword || request.NewPassword.Length < 2)
             {
                 updateQuery = "UPDATE Users SET UserName = @Username WHERE Id = @id";
             } 

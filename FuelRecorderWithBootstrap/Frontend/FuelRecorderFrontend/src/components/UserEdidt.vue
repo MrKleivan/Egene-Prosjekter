@@ -2,6 +2,7 @@
 import { BButton, BFormFloatingLabel, BFormInput, BContainer, BRow, BCol, BForm } from 'bootstrap-vue-next';
 import { reactive, ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { errorMessages } from 'vue/compiler-sfc';
 
 const route = useRoute();
 const router = useRouter();
@@ -51,13 +52,14 @@ const EditUser = async () => {
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.message || 'Oppdatering mislyktes');
+            throw new Error(`Feil ved oppdatering (kode: ${errorData})`);
         }
         
-        await router.push('/');
+        localStorage.setItem('userName', userRegistration.newUsername);
+        await router.push('/edidt');
 
     } catch (err) {
-        error.value = err.message;
+        error.value = `Oppdatering mislyktes: ${err}`;
     } finally {
         loading.value = false;
     }
@@ -66,18 +68,18 @@ const EditUser = async () => {
 const confirmUpdate = async () => {
     if (confirm("Er du sikker på at du vil gjøre denne endringen?")) {
         await EditUser();
-        router.push('/edidt');
     }
 };
 
 const goBack = () => {
     router.push('/edidt'); 
-    console.log(localStorage.getItem('userName'))
 };
 
 </script>µ
 
 <template>
+    <div v-if="loading">Oppdaterer bruker...</div>
+    <div v-if="error" class="error">{{ error }}</div>
     <BContainer class="bv-example-row">
         <BRow>
             <BCol sm></BCol>
@@ -116,8 +118,6 @@ const goBack = () => {
                             :style="{ backgroundColor: userRegistration.newPassword.length > 0 ? (isPasswordMatch ? 'green' : 'red') : '' }"
                         />
                     </BFormFloatingLabel>
-
-                    <p v-if="error" class="text-danger">{{ error }}</p>
 
                     <BButton pill class="mx-2" @click="confirmUpdate" variant="dark" :disabled="loading">
                         {{ loading ? 'Lagrer...' : 'Lagre' }}
