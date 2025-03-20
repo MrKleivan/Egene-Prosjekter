@@ -76,13 +76,13 @@ console.log(Vehicles)
 <template>
 <VehicalNavigation />
 <br/>
-<BRow>
-    <BCol sm>
-
-    </BCol>
-    <BCol sm>
-        <BCard v-for="vehicle in Vehicles">
-            <h2>{{ vehicle.name }}</h2>
+<BCard class="vehicle-card" v-for="vehicle in Vehicles">
+    <BRow>
+        <BCol class="vehicle-card-left">
+            <h2>{{ vehicle.name }}</h2><hr/>
+            <span>{{ vehicle.brand }}</span>
+        </BCol>
+        <BCol class="vehicle-card-right">
             <BButton class="mx-2" @click="router.push({ path: '/edidtVehicle', 
             query: { 
                 id: vehicle.id,
@@ -94,13 +94,9 @@ console.log(Vehicles)
                 } 
             })" variant="dark">Endre</BButton>
             <BButton class="mx-2" @click="DeleteVehicle(vehicle.id)" variant="dark">Slett</BButton>
-        </BCard>
-    </BCol>
-
-    <BCol sm>
-
-    </BCol>
-</BRow>
+        </BCol>
+    </BRow>
+</BCard>
 </template>
 
 <style>

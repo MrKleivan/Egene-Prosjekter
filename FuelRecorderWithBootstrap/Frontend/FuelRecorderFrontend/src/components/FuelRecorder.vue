@@ -179,14 +179,13 @@ const backgroundStyleOfImage = (result) => ({
 </script>
 
 <template>
-    <br/>
     <div style="text-align: center;">
         <div v-if="loading">Laster data...</div>
         <div v-if="error" class="error">{{ error }}</div>
         <br />
         <BButton v-if="isWatching" @click="goBack">Tilbake</BButton>
         <div v-if="Vehicles != null">
-            <BContainer>
+            <BContainer class="vehicle-row-result-container">
                 <br/>
                 <span v-if="!isWatching"><h4>Dine kjøretøys totale målinger</h4></span>
                 <span v-if="isWatching"><h2>{{ Vehicles[0].name }}</h2></span>

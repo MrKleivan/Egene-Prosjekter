@@ -104,7 +104,7 @@ public class RegisterController : ControllerBase
             {
                 updateQuery = "UPDATE Users SET UserName = @Username WHERE Id = @id";
             } 
-            else if (currentPasswordHash != request.NewPassword)
+            else if (currentPasswordHash != request.NewPassword && request.NewPassword.Length > 2)
             {
                 updateQuery = "UPDATE Users SET UserName = @Username, PasswordHash = @PasswordHash WHERE Id = @id";
             }

@@ -111,7 +111,7 @@ select:focus, .form-select:focus {
     border-radius: 10px;
     font-size: 1.2vw;
     text-align: center;
-    margin-top: 5vh;
+    margin-top: 4vh;
 }
 
 .vehicle-row:hover {
@@ -138,6 +138,7 @@ select:focus, .form-select:focus {
 
 .vehicle-row-top {
     height: 4vh;
+    padding-left: 28px;
     background-color: rgb(var(--bs-btn-bg-b-rgb));
     color: rgb(var(--bs-body-color-rgb));
     border: 2px solid rgba(var(--bs-placeholder-color-rgb), 0.7);
@@ -235,13 +236,34 @@ select:focus, .form-select:focus {
     border-radius: 10px;
 }
 
+.vehicle-card {
+    width: 30%;
+    margin: auto;
+    margin-top: 2em;
+    align-content: center;
+}
+.vehicle-card .btn {
+    width: 100%;
+    margin-bottom: 1em;
+}
 
 
-@media only screen and (max-width: 1100px) {
+
+@media only screen and (max-width: 1300px) {
     .vehicle-row-reult-name {
         font-size: 5vw;
     }
     .recordButton {
+        width: 60%;
+    }
+
+    .vehicle-card {
+        width: 50%;
+    }
+}
+
+@media only screen and (max-width: 750px) {
+    .vehicle-card {
         width: 60%;
     }
 }
@@ -256,8 +278,12 @@ select:focus, .form-select:focus {
         font-size: 1.5vh;
     }
 
-    .vehicle-row, .vehicle-row-top {
-        padding: 4px;
+    .vehicle-row, .vehicle-row-top, .vehicle-row-bottom {
+        padding: 10px;
+    }
+
+    .vehicle-row-top {
+        padding-left: 20px;
     }
 
     .noneHover.vehicle-row {
@@ -265,23 +291,36 @@ select:focus, .form-select:focus {
     }
 
     button, .btn {
-        font-size: 2.5vw;
+        font-size: 2.2vw;
     }
 
-    .new-record-container .vehicle-row {
-        flex-direction: column;
-        align-items: center;
-    }
-    .new-record-container .vehicle-row > .col {
-        width: 95%;
-        margin-bottom: 0.3rem;
-        background-color: rgba(var(--bs-btn-bg-b-rgb), 0.2);
-        border: thin solid rgb(var(--bs-body-color-rgb));
-    }
+    
 
     .vehicle-row-reult-name {
         display: none;
     }
+
+    .vehicle-card {
+        width: 70%;
+        font-size: 2vw;
+        align-content: center;
+        text-align: center;
+    }
+
+    .vehicle-card h2 {
+        font-size: 4vw;
+    }
+
+    .vehicle-card .btn {
+        width: 100%;
+        margin-top: 1em;
+    }
+
+    .vehicle-row-result-container, .vehicle-row-records-container, .new-record-container {
+        width: 95%;
+    }
+
+    
 }
 
 
@@ -296,12 +335,13 @@ select:focus, .form-select:focus {
 
     .vehicle-row {
         padding: 0px;
+        min-height: 10vh;
     }
 
     .vehicle-row-top {
         font-size: 3vw;
-        padding: 1px;
         border-width: 1px;
+        padding-left: 20px;
     }
 
     .recordInput {
@@ -316,5 +356,38 @@ select:focus, .form-select:focus {
     .vehicle-row-records {
         font-size: 3vw;
     }
+
+    .new-record-container .vehicle-row-new-records {
+        flex-direction: column;
+        align-items: center;
+    }
+    .new-record-container .vehicle-row-new-records > .col {
+        width: 95%;
+        margin-bottom: 0.2rem;
+        background-color: rgba(var(--bs-btn-bg-b-rgb), 0.2);
+        border: thin solid rgb(var(--bs-body-color-rgb));
+        text-align: center;
+    }
+
+    .new-record-container .vehicle-row-new-records > .col:last-child {
+        padding: 0;
+        border: none;
+        background: none;
+    }
+
+    .vehicle-row-records button {
+        width: 100%;
+    }
+
+    .vehicle-row-new-records button {
+        margin: 0;
+        width: 50%;
+        border-radius: 5px;
+    }
+
+    .records-container {
+        padding: 0;
+    }
+
     
 }
