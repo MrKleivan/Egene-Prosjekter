@@ -37,7 +37,6 @@ const LoginUser = async () => {
         localStorage.setItem('userId', data.userId);
         localStorage.setItem('userName', data.userName);
         router.push({name: 'ProtectedPage'});
-        console.log(data.userName);
 
     } catch (err) {
         error.value = err.message;
