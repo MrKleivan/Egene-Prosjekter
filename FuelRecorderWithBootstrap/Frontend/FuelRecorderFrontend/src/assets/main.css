@@ -60,6 +60,15 @@ header {
 .loginContainer {
     background-color: rgba(var(--bs-btn-bg-b-rgb), 0.3);
     border-radius: 10px;
+    border: 1px ridge gray;
+}
+
+#login .input-group-text {
+    width: 30%;
+}
+#login span {
+    width: 100%;
+    text-align: end;
 }
 
 button, .btn {
@@ -402,26 +411,3 @@ select:focus, .form-select:focus {
 
 }
 
-@media only screen and (max-width: 270px) {
-    #login {
-        width: 98%;
-        display: grid;
-        margin: auto;
-        margin-top: 1vh;
-        background-color: var(--bs-tertiary-bg);
-        border-radius: 5px;
-    }
-
-    #login .input-group-text {
-        width: 100%;
-        border-radius: 5px 5px 0 0;
-        background-color: inherit;
-    }
-
-    #floatingPassword, #floatingEmail {
-        width: 100%;
-        border-radius: 0 0 5px 5px;
-        margin: auto;
-        border:initial;
-    }
-}

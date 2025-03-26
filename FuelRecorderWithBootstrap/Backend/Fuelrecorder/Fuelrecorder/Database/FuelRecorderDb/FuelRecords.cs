@@ -17,30 +17,16 @@ public class FuelRecords
 
     public async Task<IResult> GetAll()
     {
-        
         var fuelRecorders = new List<FuelRecorderModel>();
-        using (var conn = new SqlConnection(_connectionString))
-        {
-            await conn.OpenAsync();
-            var sql = new SqlCommand("SELECT * FROM FuelRecords", conn);
+        var conn = new SqlConnection(_connectionString);
+        
+        await conn.OpenAsync();
+        var query = "SELECT * FROM FuelRecords";
+        var sql = new SqlCommand(query, conn);
 
-            using (var reader = await sql.ExecuteReaderAsync())
-            {
-                while (await reader.ReadAsync())
-                {
-                    fuelRecorders.Add( new FuelRecorderModel
-                    {
-                        Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                        Kilometer = Convert.ToDouble(reader["Kilometer"]),
-                        FuelFilled = Convert.ToDouble(reader["FuelFilled"]),
-                        Price = Convert.ToDouble(reader["Price"]),
-                        UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
-                        VehicleId = reader.GetInt32(reader.GetOrdinal("VehicleId")),
-                    });
-                }
-                
-            }
-        }
+        fuelRecorders = await SetValuesFromQuery(sql);
+        
+        conn.Close();
 
         if (fuelRecorders.Count < 1)
         {
@@ -52,29 +38,17 @@ public class FuelRecords
     public async Task<IResult> GetAllFuelRecordsFromUserByUserId(int id)
     {
         var fuelRecorders = new List<FuelRecorderModel>();
-        using (var conn = new SqlConnection(_connectionString))
-        {
-            await conn.OpenAsync();
-            var sql = new SqlCommand("SELECT * FROM FuelRecords WHERE UserId = @id", conn);
-            sql.Parameters.AddWithValue("@id", id);
-            
-            using (var reader = await sql.ExecuteReaderAsync())
-            {
-                while (await reader.ReadAsync())
-                {
-                    fuelRecorders.Add( new FuelRecorderModel
-                    {
-                        Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                        Kilometer = Convert.ToDouble(reader["Kilometer"]),
-                        FuelFilled = Convert.ToDouble(reader["FuelFilled"]),
-                        Price = Convert.ToDouble(reader["Price"]),
-                        UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
-                        VehicleId = reader.GetInt32(reader.GetOrdinal("VehicleId")),
-                    });
-                }
-            }
-        }
-
+        var conn = new SqlConnection(_connectionString);
+        
+        await conn.OpenAsync();
+        var query = "SELECT * FROM FuelRecords WHERE userId = @userId";
+        var sql = new SqlCommand(query, conn);
+        sql.Parameters.AddWithValue("@userId", id);
+        
+        fuelRecorders = await SetValuesFromQuery(sql);
+        
+        conn.Close();
+        
         if (fuelRecorders.Count == 0)
         {
             return Results.NotFound();
@@ -86,29 +60,16 @@ public class FuelRecords
     public async Task<IResult> GetAllFuelRecordsFromUserByVehicleId(int id)
     {
         var fuelRecorders = new List<FuelRecorderModel>();
-        using (var conn = new SqlConnection(_connectionString))
-        {
-            await conn.OpenAsync();
-            var sql = new SqlCommand("SELECT * FROM FuelRecords WHERE VehicleId = @id", conn);
-            sql.Parameters.AddWithValue("@id", id);
-            
-            using (var reader = await sql.ExecuteReaderAsync())
-            {
-                while (await reader.ReadAsync())
-                {
-                    fuelRecorders.Add( new FuelRecorderModel
-                    {
-                        Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                        Kilometer = Convert.ToDouble(reader["Kilometer"]),
-                        FuelFilled = Convert.ToDouble(reader["FuelFilled"]),
-                        Price = Convert.ToDouble(reader["Price"]),
-                        UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
-                        VehicleId = reader.GetInt32(reader.GetOrdinal("VehicleId")),
-                    });
-                }
-            }
-        }
-
+        var conn = new SqlConnection(_connectionString);
+        
+        await conn.OpenAsync();
+        var sql = new SqlCommand("SELECT * FROM FuelRecords WHERE VehicleId = @id", conn);
+        sql.Parameters.AddWithValue("@id", id);
+        
+        fuelRecorders = await SetValuesFromQuery(sql);
+        
+        conn.Close();
+        
         if (fuelRecorders.Count == 0)
         {
             return Results.NotFound();
@@ -192,5 +153,27 @@ public class FuelRecords
                 }
             }
         }
+    }
+
+    private async Task<List<FuelRecorderModel>> SetValuesFromQuery(SqlCommand sqlcommand)
+    {
+        var fuelRecorders = new List<FuelRecorderModel>();
+
+        var reader = await sqlcommand.ExecuteReaderAsync();
+        
+        while (await reader.ReadAsync())
+        {
+            fuelRecorders.Add( new FuelRecorderModel
+            {
+                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                Kilometer = Convert.ToDouble(reader["Kilometer"]),
+                FuelFilled = Convert.ToDouble(reader["FuelFilled"]),
+                Price = Convert.ToDouble(reader["Price"]),
+                UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
+                VehicleId = reader.GetInt32(reader.GetOrdinal("VehicleId")),
+            });
+        }
+
+        return fuelRecorders;
     }
 }
