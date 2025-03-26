@@ -2,6 +2,7 @@
 import { BButton, BCol, BContainer, BForm, BFormFloatingLabel, BFormInput, BInputGroup, BRow } from 'bootstrap-vue-next';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { colorMode } from './ColorMode';
 
 
 const username = ref('');
@@ -49,18 +50,18 @@ const LoginUser = async () => {
 </script>
 
 <template>
-<BContainer>
+<BContainer >
     <BRow>
         <BCol sm>
 
         </BCol>
-        <BCol lg style="box-shadow: 0px 0px 300px 10px; border-radius: 10px; padding: 10px;">
+        <BCol class="loginContainer" lg style="box-shadow: 0px 0px 300px 10px; border-radius: 10px; padding: 10px;">
             <BForm>
-                <BInputGroup size="sm" prepend="Brukernavn" >
-                    <BFormInput id="floatingEmail" size="sm" style="border-color: lightgrey;" type="email"  autocomplete="email" placeholder="E-postaddress" v-model="username" required/>
+                <BInputGroup id="login" size="sm" prepend="Brukernavn" >
+                    <BFormInput id="floatingEmail" size="sm" type="email"  autocomplete="email" placeholder="E-postaddress" v-model="username" required/>
                 </BInputGroup>
-                <BInputGroup size="sm" prepend="Passord" >
-                    <BFormInput id="floatingPassword" size="sm" style="border-color: lightgrey;" type="password" autocomplete="current-password" placeholder="Skriv inn passord" v-model="password" required/>
+                <BInputGroup id="login" size="sm" prepend="Passord" >
+                    <BFormInput id="floatingPassword" size="sm" type="password" autocomplete="current-password" placeholder="Skriv inn passord" v-model="password" required/>
                 </BInputGroup>
             </BForm>
             <br/>

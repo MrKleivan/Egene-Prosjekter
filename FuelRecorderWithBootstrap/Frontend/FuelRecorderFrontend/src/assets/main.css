@@ -57,6 +57,11 @@ header {
     background-color: rgba(var(--bs-body-color-rgb), 0.1);
 }
 
+.loginContainer {
+    background-color: rgba(var(--bs-btn-bg-b-rgb), 0.3);
+    border-radius: 10px;
+}
+
 button, .btn {
     background-color: rgb(var(--bs-btn-bg-b-rgb));
     color: rgb(var(--bs-body-color-rgb));
@@ -127,6 +132,7 @@ select:focus, .form-select:focus {
     padding: 0;
     align-content: center;
 }
+
 .vehicle-row > [class^="col"]:nth-child(odd) {
     background-color: rgba(var(--bs-btn-bg-b-rgb), 0.4);
     border-radius: 15px;
@@ -134,7 +140,6 @@ select:focus, .form-select:focus {
     padding: 0;
     align-content: center;
 }
-
 
 .vehicle-row-top {
     height: 4vh;
@@ -146,7 +151,6 @@ select:focus, .form-select:focus {
     text-align: center;
     align-content: center;
 }
-
 
 .bad {
     background-color: rgba(202, 130, 130, 0.747);
@@ -187,7 +191,6 @@ select:focus, .form-select:focus {
     border: 1px ridge rgba(var(--bs-body-bg-rgb), 0.8);
     border-radius: 5px;
 }
-
 
 #noneHover {
     background-color: rgba(var(--bs-btn-bg-b-rgb), 0.4);
@@ -248,7 +251,6 @@ select:focus, .form-select:focus {
 }
 
 
-
 @media only screen and (max-width: 1300px) {
     .vehicle-row-reult-name {
         font-size: 5vw;
@@ -274,6 +276,11 @@ select:focus, .form-select:focus {
         width: 100vw;
     }
 
+    .loginContainer {
+        width: 95%;
+        margin: auto;
+    }
+
     .resultColorBox {
         font-size: 1.5vh;
     }
@@ -293,8 +300,6 @@ select:focus, .form-select:focus {
     button, .btn {
         font-size: 2.2vw;
     }
-
-    
 
     .vehicle-row-reult-name {
         display: none;
@@ -320,12 +325,18 @@ select:focus, .form-select:focus {
         width: 95%;
     }
 
-    
 }
 
 
 @media only screen and (max-width: 365px) {
 
+    #login .input-group-text {
+        font-size: 2vh;
+    }
+
+    #floatingPassword, #floatingEmail {
+        font-size: 2vh;
+    }
 
     .resultColorBox {
         font-size: 3vw;
@@ -389,10 +400,28 @@ select:focus, .form-select:focus {
         padding: 0;
     }
 
-    @media only screen and (max-width: 270px) {
-        input::placeholder {
-            background-color: red;
-        }
+}
+
+@media only screen and (max-width: 270px) {
+    #login {
+        width: 98%;
+        display: grid;
+        margin: auto;
+        margin-top: 1vh;
+        background-color: var(--bs-tertiary-bg);
+        border-radius: 5px;
     }
-    
+
+    #login .input-group-text {
+        width: 100%;
+        border-radius: 5px 5px 0 0;
+        background-color: inherit;
+    }
+
+    #floatingPassword, #floatingEmail {
+        width: 100%;
+        border-radius: 0 0 5px 5px;
+        margin: auto;
+        border:initial;
+    }
 }
