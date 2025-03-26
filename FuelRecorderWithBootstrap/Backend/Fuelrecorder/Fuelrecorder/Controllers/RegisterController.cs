@@ -35,12 +35,14 @@ public class RegisterController : ControllerBase
                     return Results.BadRequest("Brukernavn er allerede i bruk");
                 }
             }
+
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
             
             string insertQuery = "INSERT INTO Users (Username, PasswordHash) VALUES (@username, @passwordHash)";
             using (SqlCommand insertCmd = new SqlCommand(insertQuery, connection))
             {
                 insertCmd.Parameters.AddWithValue("@username", user.Username);
-                insertCmd.Parameters.AddWithValue("@passwordHash", user.PasswordHash);
+                insertCmd.Parameters.AddWithValue("@passwordHash", hashedPassword);
                 
                 int rowsAffected = await insertCmd.ExecuteNonQueryAsync();
                 if (rowsAffected > 0 )

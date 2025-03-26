@@ -17,7 +17,7 @@ const LoginUser = async () => {
     error.value = null;
 
     try {
-        const response = await fetch('/login', {
+        const response = await fetch('/Login/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

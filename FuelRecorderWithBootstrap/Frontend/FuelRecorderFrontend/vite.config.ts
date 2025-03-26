@@ -39,8 +39,8 @@ export default defineConfig({
         changeOrigin: true,
         secure: false, // Brukes dersom du har selvsignerte sertifikater i utvikling
       },
-      '/login': {
-        target: 'https://localhost:7213/Login',
+      '/Login': {
+        target: 'https://localhost:7213',
         changeOrigin: true,
         secure: false,
       },

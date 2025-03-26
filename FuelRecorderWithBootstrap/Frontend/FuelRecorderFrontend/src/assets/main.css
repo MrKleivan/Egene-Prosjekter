@@ -389,5 +389,10 @@ select:focus, .form-select:focus {
         padding: 0;
     }
 
+    @media only screen and (max-width: 270px) {
+        input::placeholder {
+            background-color: red;
+        }
+    }
     
 }

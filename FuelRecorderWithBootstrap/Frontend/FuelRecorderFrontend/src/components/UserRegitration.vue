@@ -25,29 +25,38 @@ const RegUser = async () => {
     loading.value = true;
     error.value = null;
 
+    if (!userRegistration.regUsername || !userRegistration.regPassword) {
+    error.value = "Brukernavn og passord må fylles ut";
+    loading.value = false;
+    return;
+    }
+
     if (!isPasswordMatch.value) {
     error.value = "Passordene stemmer ikke overens";
     loading.value = false;
     return;
     }
 
+    console.log(JSON.stringify({ id: 0, username: userRegistration.regUsername, passwordHash: userRegistration.regPassword }));
+
     try {
-        const response = await fetch('/Register/register', {
+        const response = await fetch(`/Register/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                id: 0,
                 username: userRegistration.regUsername,
-                passwordHash: userRegistration.regPassword
+                password: userRegistration.regPassword
             })
         });
 
         if(!response.ok){
+            const errorData = await response.json();
             throw new Error('Registrering mislyktes');
         }
 
-        const data = await response.json();
         await router.push('/');
 
     } catch (err) {
@@ -66,6 +75,7 @@ const token = localStorage.getItem('jwtToken');
 <template>
 
 <BContainer class="bv-example-row">
+    <div v-if="error">{{ error }}</div>
     <BRow>
         <BCol sm>
 
@@ -77,7 +87,7 @@ const token = localStorage.getItem('jwtToken');
                     <BFormInput id="floatingEmail" type="email"  placeholder="Email address" v-model="userRegistration.regUsername" autocomplete="username"/>
                 </BFormFloatingLabel>
                 <BFormFloatingLabel label="Password" label-for="floatingPassword" class="my-2">
-                    <BFormInput id="floatingPassword" type="password" placeholder="Password" v-model="userRegistration.regPassword" autocomplete="password"/>
+                    <BFormInput id="floatingPassword" type="password" placeholder="Password" v-model="userRegistration.regPassword" autocomplete="new-password"/>
                 </BFormFloatingLabel>
                 <BFormFloatingLabel label="RepeatPassword" label-for="floatingPasswordRe" class="my-2">
                     <BFormInput id="floatingPasswordRe" 
