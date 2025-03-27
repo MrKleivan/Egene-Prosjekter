@@ -8,25 +8,11 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    BBadge: typeof import('bootstrap-vue-next/components/BBadge')['BBadge']
     BButton: typeof import('bootstrap-vue-next/components/BButton')['BButton']
-    BCard: typeof import('bootstrap-vue-next/components/BCard')['BCard']
-    BCardFooter: typeof import('bootstrap-vue-next/components/BCard')['BCardFooter']
-    BCardText: typeof import('bootstrap-vue-next/components/BCard')['BCardText']
     BCol: typeof import('bootstrap-vue-next/components/BContainer')['BCol']
     BContainer: typeof import('bootstrap-vue-next/components/BContainer')['BContainer']
     BForm: typeof import('bootstrap-vue-next/components/BForm')['BForm']
-    BFormFloatingLabel: typeof import('bootstrap-vue-next/components/BForm')['BFormFloatingLabel']
-    BFormInput: typeof import('bootstrap-vue-next/components/BFormInput')['BFormInput']
-    BFormSelect: typeof import('bootstrap-vue-next/components/BFormSelect')['BFormSelect']
-    BModal: typeof import('bootstrap-vue-next/components/BModal')['BModal']
-    BNavbar: typeof import('bootstrap-vue-next/components/BNavbar')['BNavbar']
-    BNavbarBrand: typeof import('bootstrap-vue-next/components/BNavbar')['BNavbarBrand']
-    BNavForm: typeof import('bootstrap-vue-next/components/BNav')['BNavForm']
-    BPlaceholderCard: typeof import('bootstrap-vue-next/components/BPlaceholder')['BPlaceholderCard']
     BRow: typeof import('bootstrap-vue-next/components/BContainer')['BRow']
-    ColorMode: typeof import('./src/components/ColorMode.vue')['default']
-    DarkLightMode: typeof import('./src/components/DarkLightMode.vue')['default']
     FuelRecorder: typeof import('./src/components/FuelRecorder.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']
@@ -35,7 +21,6 @@ declare module 'vue' {
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     Login: typeof import('./src/components/Login.vue')['default']
     LogOut: typeof import('./src/components/LogOut.vue')['default']
-    Regitration: typeof import('./src/components/Regitration.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UserEdidt: typeof import('./src/components/UserEdidt.vue')['default']
@@ -44,8 +29,5 @@ declare module 'vue' {
     VehicleEdidt: typeof import('./src/components/VehicleEdidt.vue')['default']
     VehicleRegistration: typeof import('./src/components/VehicleRegistration.vue')['default']
     Vehicles: typeof import('./src/components/Vehicles.vue')['default']
-  }
-  export interface ComponentCustomProperties {
-    vBColorMode: typeof import('bootstrap-vue-next/directives/BColorMode')['vBColorMode']
   }
 }

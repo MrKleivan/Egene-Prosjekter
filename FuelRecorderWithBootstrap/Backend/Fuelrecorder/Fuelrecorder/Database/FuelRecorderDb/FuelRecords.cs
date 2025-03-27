@@ -132,6 +132,7 @@ public class FuelRecords
             }
         }
     }
+    
     public async Task<IResult> DeleteFuelRecord(int id)
     {
         using (var conn = new SqlConnection(_connectionString))
@@ -176,4 +177,5 @@ public class FuelRecords
 
         return fuelRecorders;
     }
+    
 }
