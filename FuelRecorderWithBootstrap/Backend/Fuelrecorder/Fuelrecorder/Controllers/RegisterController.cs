@@ -114,7 +114,7 @@ public class RegisterController : ControllerBase
             using (SqlCommand updateCmd = new SqlCommand(updateQuery, connection))
             {
                 updateCmd.Parameters.AddWithValue("@id", request.Id);
-                updateCmd.Parameters.AddWithValue("@Username", request.NewUsername);
+                updateCmd.Parameters.AddWithValue("@Username", request.NewUserName);
                 updateCmd.Parameters.AddWithValue("@PasswordHash", request.NewPassword);
     
                 int rowsAffected = await updateCmd.ExecuteNonQueryAsync();
@@ -130,5 +130,6 @@ public class RegisterController : ControllerBase
             }
         }
     }
+    
 
 }

@@ -37,10 +37,8 @@ const RegUser = async () => {
     return;
     }
 
-    console.log(JSON.stringify({ id: 0, username: userRegistration.regUsername, passwordHash: userRegistration.regPassword }));
-
     try {
-        const response = await fetch(`/Register/register`, {
+        const response = await fetch(`/User/registration`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

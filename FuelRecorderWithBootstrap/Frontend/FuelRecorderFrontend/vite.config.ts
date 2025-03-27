@@ -49,6 +49,11 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      '/User': {
+        target: 'https://localhost:7213',
+        changeOrigin: true,
+        secure: false,
+      },
       '/Vehicles': {
         target: 'https://localhost:7213',
         changeOrigin: true,

@@ -129,6 +129,8 @@ public class Vehicles
         sql.Parameters.AddWithValue("@id", id);
         
         vehicles = await SetValuesFromQuery(sql);
+        
+        conn.Close();
              
         if (vehicles.Count > 0)
         {

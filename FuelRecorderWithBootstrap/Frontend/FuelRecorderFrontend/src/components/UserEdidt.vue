@@ -2,7 +2,6 @@
 import { BButton, BFormFloatingLabel, BFormInput, BContainer, BRow, BCol, BForm } from 'bootstrap-vue-next';
 import { reactive, ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { errorMessages } from 'vue/compiler-sfc';
 
 const route = useRoute();
 const router = useRouter();
@@ -36,7 +35,7 @@ const EditUser = async () => {
     try {
         const token = localStorage.getItem('jwtToken'); // Henter token i funksjonen
 
-        const response = await fetch(`/Register/update`, {
+        const response = await fetch(`/User/update`, {
             method: 'PUT', 
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +43,8 @@ const EditUser = async () => {
             },
             body: JSON.stringify({
                 id: userRegistration.id,
-                newUsername: userRegistration.newUserName,
+                oldUserName: userRegistration.oldUserName,
+                newUserName: userRegistration.newUserName,
                 currentPassword: userRegistration.oldPassword,
                 newPassword: userRegistration.newPasswordRepeat
             })

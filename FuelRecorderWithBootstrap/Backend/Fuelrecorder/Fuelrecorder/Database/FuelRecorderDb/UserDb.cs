@@ -23,7 +23,11 @@ public class UserDb
 
     public async Task<IResult> UserLoginRequest([FromBody] LoginRequest loginRequest)
     {
-        var user = await GetUser(loginRequest);
+        User user = new User();
+        var conn = new SqlConnection(_connectionString);
+        await conn.OpenAsync();
+        
+        user = await GetUser(loginRequest.Username, conn);
         
         if (user == null || 
             !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.PasswordHash))
@@ -34,25 +38,102 @@ public class UserDb
                 statusCode: StatusCodes.Status401Unauthorized);
         }
             
-        var access = await GetAccsessInfo(user);
+        var accsessInfo = await GetAccsessInfo(user);
         
-        return Results.Ok(access);
+        conn.Close();
+        
+        return Results.Ok(accsessInfo);
     }
-
-    private async Task<User> GetUser(LoginRequest loginRequest)
+    
+    public async Task<IResult> UserRegistration([FromBody] LoginRequest loginRequest)
     {
         User user = null;
-
-        await using var connection = new SqlConnection(_connectionString);
+        var conn = new SqlConnection(_connectionString);
+        await conn.OpenAsync();
         
-        await connection.OpenAsync();
+        bool userExist = await CheckExistence(loginRequest.Username,  conn);
 
-        string sqlQuery = "SELECT Id, Username, PasswordHash FROM Users WHERE Username = @Username";
+        if (userExist)
+        { 
+            return Results.BadRequest("Brukernavn er allerede i bruk");
+        }
+        
+        user = await AddUserToDatabase(loginRequest, conn);
+        
+        conn.Close();
 
-        await using var command = new SqlCommand(sqlQuery, connection);
-        command.Parameters.AddWithValue("@Username", loginRequest.Username);
+        if (user == null)
+        {
+            return Results.BadRequest("Feil ved registrering");
+        }
 
-        await using var reader = await command.ExecuteReaderAsync();
+        return Results.Ok("Bruker er blitt registrert" + user);
+    }
+    
+    public async Task<IResult> UserUpdate([FromBody] UserUpdateRequest request)
+    {
+        User user = null;
+        
+
+        if (request.NewPassword != "")
+        {
+            if (string.IsNullOrWhiteSpace(request.NewPassword))
+            {
+                return Results.BadRequest("Nytt passord må oppgis.");
+            }
+        }
+    
+        var conn = new SqlConnection(_connectionString);
+        await conn.OpenAsync();
+        
+        bool userExist = await CheckExistence(request.OldUserName,  conn);
+
+        if (!userExist)
+        {
+            return Results.BadRequest("Fant ikke noen bruker ved det navnet(se at gammelt brukernavn er riktig)");
+        }
+    
+        User oldUserInfo = await GetUser(request.OldUserName, conn);
+
+        if (oldUserInfo == null)
+        {
+            return Results.NotFound("Bruker ikke funnet");
+        }
+
+        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.CurrentPassword);
+        
+        if (hashedPassword != oldUserInfo.PasswordHash)
+        {
+            return Results.BadRequest("Feil passord");
+        }
+
+        user = await UpdateUserDataToDatabase(request, conn);
+        
+        if (user == null)
+        {
+            return Results.BadRequest("Ingen endringer ble gjort.");
+        } 
+        return Results.Ok("Bruker er oppdatert.");
+        
+        
+    }
+
+
+    private async Task<User> GetUser(string userName, SqlConnection conn)
+    {
+        User user = null;
+        bool userExist = await CheckExistence(userName, conn);
+        if (!userExist)
+        {
+            return user;
+        }
+        
+        string query = "SELECT Id, Username, PasswordHash FROM Users WHERE Username = @Username";
+
+        var sql = new SqlCommand(query, conn);
+        sql.Parameters.AddWithValue("@Username", userName);
+
+        var reader = await sql.ExecuteReaderAsync();
         
             if (await reader.ReadAsync())
             {
@@ -68,6 +149,58 @@ public class UserDb
         return user;
     }
 
+    private async Task<User> AddUserToDatabase(LoginRequest loginRequest, SqlConnection conn)
+    {
+        User user = null;
+        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(loginRequest.Password);
+            
+        string query = "INSERT INTO Users (Username, PasswordHash) VALUES (@username, @passwordHash)";
+        SqlCommand insertCmd = new SqlCommand(query, conn);
+        
+        insertCmd.Parameters.AddWithValue("@username", loginRequest.Username);
+        insertCmd.Parameters.AddWithValue("@passwordHash", hashedPassword);
+        
+        int rowsAffected = await insertCmd.ExecuteNonQueryAsync();
+
+        if (rowsAffected > 0)
+        {
+            user = await GetUser(loginRequest.Username, conn);
+        }
+        
+        return user;
+    }
+
+    private async Task<User> UpdateUserDataToDatabase(UserUpdateRequest request, SqlConnection conn)
+    {
+        User user = null;
+        string query = "";
+        string currentPasswordHash = "";
+
+        if (currentPasswordHash == request.NewPassword || request.NewPassword.Length < 2)
+        {
+            query = "UPDATE Users SET UserName = @Username WHERE Id = @id";
+        } 
+        else if (currentPasswordHash != request.NewPassword && request.NewPassword.Length > 2)
+        {
+            query = "UPDATE Users SET UserName = @Username, PasswordHash = @PasswordHash WHERE Id = @id";
+        }
+        
+        SqlCommand updateCmd = new SqlCommand(query, conn);
+        
+        updateCmd.Parameters.AddWithValue("@id", request.Id);
+        updateCmd.Parameters.AddWithValue("@Username", request.NewUserName);
+        updateCmd.Parameters.AddWithValue("@PasswordHash", request.NewPassword);
+        
+        int rowsAffected = await updateCmd.ExecuteNonQueryAsync();
+
+        if (rowsAffected > 0)
+        {
+            user = await GetUser(request.NewUserName, conn);
+        }
+        
+        return user;
+    }
+    
     private async Task<object> GetAccsessInfo(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -98,6 +231,21 @@ public class UserDb
             userName = user.Username,
         };
 
+    }
+
+    private async Task<bool> CheckExistence(string userName, SqlConnection connection)
+    {
+        string query = "SELECT COUNT(*) FROM Users WHERE Username = @username";
+    
+        SqlCommand sql = new SqlCommand(query, connection);
+        sql.Parameters.AddWithValue("@username", userName);
+        
+        int userCount = (int)await sql.ExecuteScalarAsync();
+        if (userCount > 0)
+        {
+            return true;
+        }
+        return false;
     }
     
 }
