@@ -54,8 +54,10 @@ const EditUser = async () => {
             const errorData = await response.json();
             throw new Error(`Feil ved oppdatering (kode: ${errorData})`);
         }
-        
-        localStorage.setItem('userName', userRegistration.newUsername);
+
+        const data = await response.json();
+        localStorage.setItem('userId', data.user.id);
+        localStorage.setItem('userName', data.user.username);
         await router.push('/edidt');
 
     } catch (err) {

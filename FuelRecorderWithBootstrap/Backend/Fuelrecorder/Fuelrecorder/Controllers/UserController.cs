@@ -1,5 +1,6 @@
 using Fuelrecorder.Database;
 using Fuelrecorder.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fuelrecorder.Controllers;
@@ -22,7 +23,7 @@ public class UserController : ControllerBase
     public async Task<IResult> UserRegistration([FromBody] LoginRequest loginRequest) => 
         await _db.UserRegistration(loginRequest);
     
-    [HttpPut("update")]
+    [HttpPut("update"), Authorize]
     public async Task<IResult> UserdataUpdate([FromBody] UserUpdateRequest request) => 
         await _db.UserUpdate(request);
 }

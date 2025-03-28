@@ -67,20 +67,16 @@ public class UserDb
             return Results.BadRequest("Feil ved registrering");
         }
 
-        return Results.Ok("Bruker er blitt registrert" + user);
+        return Results.Ok("Bruker er blitt registrert");
     }
     
     public async Task<IResult> UserUpdate([FromBody] UserUpdateRequest request)
     {
         User user = null;
         
-
-        if (request.NewPassword != "")
+        if (string.IsNullOrWhiteSpace(request.NewPassword))
         {
-            if (string.IsNullOrWhiteSpace(request.NewPassword))
-            {
-                return Results.BadRequest("Nytt passord må oppgis.");
-            }
+            return Results.BadRequest("Nytt passord må oppgis.");
         }
     
         var conn = new SqlConnection(_connectionString);
@@ -100,22 +96,30 @@ public class UserDb
             return Results.NotFound("Bruker ikke funnet");
         }
 
-        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.CurrentPassword);
+        var isRightPassword = BCrypt.Net.BCrypt.Verify(request.CurrentPassword, oldUserInfo.PasswordHash);
         
-        if (hashedPassword != oldUserInfo.PasswordHash)
+        if (!isRightPassword)
         {
             return Results.BadRequest("Feil passord");
         }
 
-        user = await UpdateUserDataToDatabase(request, conn);
+        user = await UpdateUserDataToDatabase(oldUserInfo, request, conn);
         
         if (user == null)
         {
             return Results.BadRequest("Ingen endringer ble gjort.");
-        } 
-        return Results.Ok("Bruker er oppdatert.");
-        
-        
+        }
+
+        return Results.Ok(new
+        {
+            Message = "Bruker er oppdatert.",
+            User = new
+            {
+                user.Id,
+                user.Username,
+            }
+        });
+
     }
 
 
@@ -133,8 +137,8 @@ public class UserDb
         var sql = new SqlCommand(query, conn);
         sql.Parameters.AddWithValue("@Username", userName);
 
-        var reader = await sql.ExecuteReaderAsync();
-        
+        using (var reader = await sql.ExecuteReaderAsync())
+        {
             if (await reader.ReadAsync())
             {
                 user = new User
@@ -144,7 +148,8 @@ public class UserDb
                     PasswordHash = reader.GetString(2),
                 };
             }
-        
+            
+        }
         
         return user;
     }
@@ -170,28 +175,26 @@ public class UserDb
         return user;
     }
 
-    private async Task<User> UpdateUserDataToDatabase(UserUpdateRequest request, SqlConnection conn)
+    private async Task<User> UpdateUserDataToDatabase(User oldUserInfo, UserUpdateRequest request, SqlConnection conn)
     {
         User user = null;
-        string query = "";
-        string currentPasswordHash = "";
+        bool isNewPassword = !BCrypt.Net.BCrypt.Verify(request.NewPassword, oldUserInfo.PasswordHash);
 
-        if (currentPasswordHash == request.NewPassword || request.NewPassword.Length < 2)
+        string query = isNewPassword
+            ? "UPDATE Users SET Username = @Username, PasswordHash = @PasswordHash WHERE Id = @Id"
+            : "UPDATE Users SET Username = @Username WHERE Id = @Id";
+        
+        SqlCommand sql = new SqlCommand(query, conn);
+        
+        sql.Parameters.AddWithValue("@id", request.Id);
+        sql.Parameters.AddWithValue("@Username", request.NewUserName);
+        if (isNewPassword)
         {
-            query = "UPDATE Users SET UserName = @Username WHERE Id = @id";
-        } 
-        else if (currentPasswordHash != request.NewPassword && request.NewPassword.Length > 2)
-        {
-            query = "UPDATE Users SET UserName = @Username, PasswordHash = @PasswordHash WHERE Id = @id";
+            string newHashedPassword = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+            sql.Parameters.AddWithValue("@PasswordHash", newHashedPassword);
         }
         
-        SqlCommand updateCmd = new SqlCommand(query, conn);
-        
-        updateCmd.Parameters.AddWithValue("@id", request.Id);
-        updateCmd.Parameters.AddWithValue("@Username", request.NewUserName);
-        updateCmd.Parameters.AddWithValue("@PasswordHash", request.NewPassword);
-        
-        int rowsAffected = await updateCmd.ExecuteNonQueryAsync();
+        int rowsAffected = await sql.ExecuteNonQueryAsync();
 
         if (rowsAffected > 0)
         {
