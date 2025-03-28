@@ -2,7 +2,6 @@
 import { BButton, BCol, BContainer, BForm, BFormFloatingLabel, BFormInput, BInputGroup, BRow } from 'bootstrap-vue-next';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { colorMode } from './ColorMode';
 
 
 const username = ref('');
@@ -18,7 +17,7 @@ const LoginUser = async () => {
     error.value = null;
 
     try {
-        const response = await fetch('/Login/login', {
+        const response = await fetch('/User/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
