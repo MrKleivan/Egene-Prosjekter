@@ -170,7 +170,7 @@ const goBack = async () => {
 };
 
 const backgroundStyleOfImage = (result) => ({
-  backgroundImage: `url('/assets/img/${result === 'Bil' ? 'car.png' : 'motorBike.png'}')`,
+  backgroundImage: `url('/assets/img/${result === 'Bil' ? 'car.png' : result === 'Motorsykkel' ? 'motorBike.png' : 'atv.png'}')`,
   backgroundPosition: 'center',
   backgroundSize: 'contain',
   backgroundRepeat: 'no-repeat',
