@@ -38,17 +38,24 @@ void MainFrame::SetupSizers()
 {
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 	mainSizer->Add(headlineText, wxSizerFlags().CenterHorizontal());
+	mainSizer->AddSpacer(25);
 
 	wxBoxSizer* inputSizer = new wxBoxSizer(wxHORIZONTAL);
 	inputSizer->Add(inputField, wxSizerFlags().Proportion(1));
+	inputSizer->AddSpacer(5);
 	inputSizer->Add(addButton);
 
 	mainSizer->Add(inputSizer, wxSizerFlags().Expand());
+	mainSizer->AddSpacer(5);
 	mainSizer->Add(checkListBox, wxSizerFlags().Expand().Proportion(1));
+	mainSizer->AddSpacer(5);
 	mainSizer->Add(clearButton);
 
-	panel->SetSizer(mainSizer);
-	mainSizer->SetSizeHints(this);
+	wxGridSizer* outerSizer = new wxGridSizer(1);
+	outerSizer->Add(mainSizer, wxSizerFlags().Border(wxALL, 25).Expand());
+
+	panel->SetSizer(outerSizer);
+	outerSizer->SetSizeHints(this);
 }
 
 void MainFrame::BindEventHandlers()
